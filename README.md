@@ -1,77 +1,78 @@
-# Face Mask Detection System - Evaluation Pipeline
+# Real-Time Face Mask Detection System
 
-A comprehensive evaluation framework for face mask detection systems using YuNet face detector and custom CNN classifiers.
+A comprehensive face mask detection system with unified interface supporting multiple face detectors and mask classifiers for real-time applications.
 
-## Overview
+## 🚀 Quick Start
 
-This evaluation pipeline provides:
-- **Face Detection Evaluation**: Test YuNet and Haar cascade detectors
-- **Classification Evaluation**: Test custom NumPy CNN and PyTorch ResNet18 classifiers  
-- **Full Pipeline Evaluation**: End-to-end detection + classification performance
-- **Speed Benchmarking**: Real-time performance analysis (FPS, latency)
-- **Memory Benchmarking**: Memory usage and leak detection
-- **Comprehensive Reporting**: Automated performance reports and recommendations
+### Simple Usage
+```bash
+# Face detection only
+python face_mask_detector.py
 
-## Project Structure
+# With mask classification using your custom PyTorch model
+python face_mask_detector.py --classifier custom_pytorch
+
+# Advanced detection with YuNet
+python face_mask_detector.py --detector yunet --classifier custom_pytorch
+```
+
+### Interactive Demo
+```bash
+# Run interactive demo menu
+python demo_unified_system.py
+
+# Or run specific demos directly
+python demo_unified_system.py --demo pytorch
+python demo_unified_system.py --demo guide
+```
+
+## 🎯 Features
+
+### **Unified Interface**
+- **Single Entry Point**: One command for all detector/classifier combinations
+- **Runtime Switching**: Change detectors and classifiers without restarting
+- **Consistent API**: Same interface for all models
+
+### **Face Detectors**
+- **Haar Cascade**: Fast, CPU-friendly (OpenCV built-in)
+- **YuNet**: Accurate ONNX-based detector
+- **MTCNN**: Precise multi-task CNN (requires GPU)
+- **RetinaFace**: State-of-the-art quality (requires GPU)
+
+### **Mask Classifiers**
+- **Custom PyTorch**: Your trained PyTorch model
+- **Yewon Pipeline**: Research pipeline models
+- **sklearn Models**: Traditional ML classifiers
+- **Detection Only**: Face detection without classification
+
+### **Real-Time Performance**
+- **Live Camera Feed**: Real-time webcam processing
+- **Performance Tracking**: FPS counter and statistics
+- **Interactive Controls**: Runtime parameter adjustment
+
+## 📁 Project Structure
 
 ```
 RealTimeFaceMaskDetection/
-├── evaluation/                    # Main evaluation framework
-│   ├── detectors/                # Face detection components
-│   │   ├── detector_wrapper.py   # YuNet & Haar detector wrappers
-│   │   └── metrics.py            # Detection metrics (mAP, IoU, etc.)
-│   ├── classifiers/              # Face mask classification components
-│   │   ├── classifier_wrapper.py # NumPy CNN & PyTorch wrappers
-│   │   └── metrics.py            # Classification metrics
-│   ├── datasets/                 # Dataset loading utilities
-│   │   └── dataset_loaders.py    # AndrewMVD, Face12k, Medical Mask loaders
-│   ├── benchmarks/               # Performance benchmarking
-│   │   ├── speed_benchmark.py    # FPS and latency testing
-│   │   └── memory_benchmark.py   # Memory usage and leak detection
-│   └── eval_pipeline.py          # Main evaluation orchestrator
-├── tests/                        # Unit tests
-│   ├── test_detector_wrapper.py  # Detector wrapper tests
-│   ├── test_detector_metrics.py  # Detection metrics tests
-│   ├── test_classifier_wrapper.py # Classifier wrapper tests
-│   └── run_tests.py              # Test runner
-├── examples/                     # Usage examples
-│   └── basic_evaluation_example.py
-├── notebooks/                    # Jupyter notebooks
-│   └── CS_583_Final_Project_Face_detection.ipynb
-└── reference_code/               # Original implementation
-    ├── code.py
-    └── maskProject.py
+├── face_mask_detector.py          # 🎯 Main unified system
+├── demo_unified_system.py         # 🎮 Interactive demo
+├── evaluation/                    # 📊 Evaluation framework
+│   ├── detectors/                # Face detection wrappers
+│   ├── classifiers/              # Classification wrappers
+│   ├── datasets/                 # Dataset utilities
+│   └── benchmarks/               # Performance testing
+├── dual_filter_system/           # 🎨 UI and display components
+│   ├── ui/controls.py            # Keyboard controls
+│   └── filters/filter_display.py # Display utilities
+├── model_artifacts/              # 🧠 Custom model support
+│   └── pytorch_model_loader.py   # PyTorch model loader
+├── yewon_pipeline/               # 🔬 Research pipeline
+├── reference_code/               # 📚 Reference implementations
+├── notebooks/                    # 📓 Jupyter notebooks
+└── tests/                        # 🧪 Test suite
 ```
 
-## Features
-
-### 🎯 Detection Evaluation
-- **Metrics**: Precision, Recall, F1-Score, mAP@0.5
-- **Detectors**: YuNet (ONNX), Haar Cascade (XML)
-- **IoU Matching**: Configurable IoU thresholds
-- **Visualization**: TP/FP/FN analysis
-
-### 🧠 Classification Evaluation  
-- **Metrics**: Accuracy, Per-class P/R/F1, Confusion Matrix, ROC Curves
-- **Models**: Custom NumPy CNN, PyTorch ResNet18
-- **Class Support**: 2-class (mask/no_mask) or 3-class (correct/incorrect/no_mask)
-- **Robustness**: Cross-validation and error analysis
-
-### ⚡ Performance Benchmarking
-- **Speed**: FPS measurement, latency analysis, scalability testing
-- **Memory**: Usage tracking, leak detection, peak memory analysis
-- **Real-time**: 30 FPS target assessment
-- **Hardware**: CPU/GPU performance comparison
-
-### 📊 Comprehensive Reporting
-- **JSON Results**: Machine-readable evaluation data
-- **Summary Reports**: Human-readable performance analysis
-- **Recommendations**: Automated optimization suggestions
-- **System Readiness**: Deployment readiness assessment
-
-## Quick Start
-
-### 1. Installation
+## 🛠️ Installation
 
 ```bash
 # Clone repository
@@ -79,210 +80,194 @@ git clone https://github.com/clydebaron2000/RealTimeFaceMaskDetection.git
 cd RealTimeFaceMaskDetection
 
 # Install dependencies
-pip install opencv-python numpy torch torchvision scikit-learn matplotlib psutil
+pip install -r requirements_realtime.txt
+
+# Additional dependencies for advanced features
+pip install torch torchvision  # For PyTorch models
+pip install onnxruntime        # For YuNet detector
 ```
 
-### 2. Run Unit Tests
+## 📖 Usage Guide
+
+### Command Line Options
+
+```bash
+python face_mask_detector.py [OPTIONS]
+
+Face Detectors:
+  --detector haar        # Haar cascade (default, fast)
+  --detector yunet       # YuNet ONNX (accurate)
+  --detector mtcnn       # MTCNN (precise, GPU)
+  --detector retinaface  # RetinaFace (best quality, GPU)
+
+Classifiers:
+  --classifier custom_pytorch  # Your PyTorch model
+  --classifier yewon          # Yewon pipeline model
+  --classifier sklearn        # sklearn model
+  (no classifier)             # Detection only
+
+Other Options:
+  --camera 0             # Camera index
+  --confidence 0.6       # Detection threshold
+  --device cpu           # cpu or cuda
+  --width 640            # Frame width
+  --height 480           # Frame height
+```
+
+### Runtime Controls
+
+During execution, use these keyboard shortcuts:
+
+| Key | Action |
+|-----|--------|
+| **1-4** | Switch detectors (Haar, YuNet, MTCNN, RetinaFace) |
+| **5-8** | Switch classifiers (Custom, Yewon, Wrapper, None) |
+| **C** | Toggle classifier on/off |
+| **S** | Take screenshot |
+| **+/-** | Adjust confidence threshold |
+| **Q/ESC** | Quit |
+
+### Examples
+
+```bash
+# Basic face detection
+python face_mask_detector.py --detector haar
+
+# Custom PyTorch model with Haar detector
+python face_mask_detector.py --detector haar --classifier custom_pytorch
+
+# Advanced setup with YuNet and custom model
+python face_mask_detector.py --detector yunet --classifier custom_pytorch --device cuda
+
+# Detection only with high-quality RetinaFace
+python face_mask_detector.py --detector retinaface --confidence 0.8
+```
+
+## 🧠 Model Requirements
+
+### Custom PyTorch Model
+- **Location**: `model_artifacts/best_pytorch_model_custom.pth`
+- **Input**: 40x40 RGB images
+- **Output**: 2 classes (without_mask=0, with_mask=1)
+
+### YuNet Detector
+- **Location**: `yewon_pipeline/face_detection_yunet_2023mar.onnx`
+- **Format**: ONNX model file
+- **Download**: Available from OpenCV model zoo
+
+### Yewon Pipeline Models
+- **Location**: `yewon_pipeline/` directory
+- **Format**: PyTorch models (.pth files)
+- **Classes**: 3-class support (with_mask, without_mask, incorrect_mask)
+
+## 🎮 Interactive Demo
+
+The demo system provides guided examples:
+
+```bash
+python demo_unified_system.py
+```
+
+**Demo Options:**
+1. **Face Detection Only** - Basic Haar cascade detection
+2. **Custom PyTorch Model** - Your trained classifier
+3. **Advanced YuNet** - High-accuracy detection
+4. **Detector Comparison** - Runtime switching demo
+5. **Usage Guide** - Comprehensive help
+
+## 🔬 Research Components
+
+### Evaluation Framework
+Comprehensive evaluation system for testing different detector/classifier combinations:
+
+```python
+from evaluation.eval_pipeline import EvaluationPipeline
+
+pipeline = EvaluationPipeline(output_dir="results")
+pipeline.setup_detector('yunet', model_path='models/yunet.onnx')
+pipeline.setup_classifier('pytorch', model_path='models/classifier.pth')
+results = pipeline.run_comprehensive_evaluation()
+```
+
+### Yewon Pipeline
+Research pipeline for training and evaluating models:
+
+```bash
+cd yewon_pipeline
+python run_experiments.py --data_root /path/to/data
+python eval_detector_classifier.py --detector yunet --classifier best_model.pth
+```
+
+### Jupyter Notebooks
+Interactive analysis and experimentation:
+- `notebooks/CS_583_Final_Project_Face_detection.ipynb` - Main project notebook
+- `notebooks/complete_dataset_notebook.ipynb` - Dataset analysis
+- `notebooks/dataset_testing_notebook.ipynb` - Testing utilities
+
+## 🧪 Testing
 
 ```bash
 # Run all tests
 python tests/run_tests.py
 
-# Run specific test module
-python tests/run_tests.py test_detector_wrapper
+# Test specific components
+python test_custom_pytorch_integration.py
+
+# Run evaluation examples
+python examples/basic_evaluation_example.py
 ```
 
-### 3. Basic Evaluation
+## 🎨 Visualization
 
-```python
-from evaluation.eval_pipeline import EvaluationPipeline
+The system provides real-time visualization with:
+- **Color-coded bounding boxes**: Green (with mask), Red (without mask), Orange (incorrect mask)
+- **Confidence scores**: Real-time probability display
+- **Performance metrics**: FPS counter and detection statistics
+- **System information**: Current detector and classifier display
 
-# Initialize pipeline
-pipeline = EvaluationPipeline(output_dir="results")
+## 🚀 Performance
 
-# Setup components
-pipeline.setup_detector('yunet', model_path='models/yunet.onnx')
-pipeline.setup_classifier('pytorch', 
-                         model_path='models/classifier.pth',
-                         class_names=['no_mask', 'with_mask', 'incorrect_mask'])
-pipeline.setup_dataset('andrewmvd', 'datasets/andrewmvd')
+### Real-Time Capabilities
+- **Target**: 30 FPS for real-time applications
+- **Haar Cascade**: ~45-60 FPS (CPU)
+- **YuNet**: ~25-35 FPS (CPU), ~60+ FPS (GPU)
+- **MTCNN**: ~15-25 FPS (GPU required)
+- **RetinaFace**: ~10-20 FPS (GPU required)
 
-# Run comprehensive evaluation
-results = pipeline.run_comprehensive_evaluation()
-```
+### Memory Usage
+- **Haar + Custom PyTorch**: ~200-300 MB
+- **YuNet + Custom PyTorch**: ~300-400 MB
+- **MTCNN/RetinaFace**: ~500-800 MB (GPU memory)
 
-### 4. Command Line Interface
+## 🔧 Troubleshooting
 
+### Common Issues
+
+**Camera not opening:**
 ```bash
-# Run comprehensive evaluation
-python -m evaluation.eval_pipeline \
-    --detector yunet \
-    --detector-model models/yunet.onnx \
-    --classifier pytorch \
-    --classifier-model models/classifier.pth \
-    --dataset andrewmvd \
-    --dataset-path datasets/andrewmvd \
-    --comprehensive
-
-# Run specific evaluations
-python -m evaluation.eval_pipeline \
-    --dataset-path datasets/andrewmvd \
-    --eval-detection \
-    --eval-classification \
-    --benchmark-speed
+# Check camera permissions and availability
+python -c "import cv2; cap = cv2.VideoCapture(0); print('Camera OK' if cap.isOpened() else 'Camera Error')"
 ```
 
-## Supported Datasets
-
-### 1. AndrewMVD Face Mask Detection
-- **Source**: [Kaggle](https://www.kaggle.com/datasets/andrewmvd/face-mask-detection)
-- **Format**: Pascal VOC XML annotations
-- **Classes**: with_mask, without_mask, mask_weared_incorrect
-- **Size**: ~853 images
-
-### 2. Face Mask 12k Images Dataset
-- **Source**: [Kaggle](https://www.kaggle.com/datasets/ashishjangra27/face-mask-12k-images-dataset)
-- **Format**: Directory structure (train/val/test)
-- **Classes**: with_mask, without_mask, mask_weared_incorrect
-- **Size**: ~12,000 images
-
-### 3. Medical Mask Dataset
-- **Source**: [Kaggle](https://www.kaggle.com/datasets/niharika41298/medical-masks-dataset)
-- **Format**: YOLO annotations
-- **Classes**: with_mask, without_mask
-- **Size**: ~6,000 images
-
-## Model Support
-
-### Face Detectors
-- **YuNet**: OpenCV's DNN-based face detector (ONNX format)
-- **Haar Cascade**: Traditional cascade classifier (XML format)
-
-### Mask Classifiers
-- **NumPy CNN**: Custom CNN implementation (32x32 grayscale input)
-- **PyTorch ResNet18**: Transfer learning approach (224x224 RGB input)
-
-## Evaluation Metrics
-
-### Detection Metrics
-- **Precision**: TP / (TP + FP)
-- **Recall**: TP / (TP + FN)  
-- **F1-Score**: 2 × (Precision × Recall) / (Precision + Recall)
-- **mAP@0.5**: Mean Average Precision at IoU=0.5
-- **IoU**: Intersection over Union for bounding box matching
-
-### Classification Metrics
-- **Accuracy**: Correct predictions / Total predictions
-- **Per-class Precision/Recall/F1**: Individual class performance
-- **Macro/Micro Averages**: Aggregated performance measures
-- **Confusion Matrix**: Detailed error analysis
-- **ROC Curves**: Threshold-independent performance
-
-### Performance Metrics
-- **FPS**: Frames per second (real-time capability)
-- **Latency**: Average processing time per frame/face
-- **Memory Usage**: Peak and average memory consumption
-- **Scalability**: Performance vs. number of faces/batch size
-
-## Example Results
-
-```
-FACE MASK DETECTION SYSTEM - COMPREHENSIVE EVALUATION REPORT
-================================================================================
-Evaluation Date: 2024-11-28 23:15:00
-
-SYSTEM CONFIGURATION
-----------------------------------------
-Detector: YuNet (ONNX)
-Classifier: PyTorch ResNet18 (PyTorch)
-Classes: no_mask, with_mask, incorrect_mask
-Dataset: andrewmvd (853 samples)
-
-DETECTION PERFORMANCE
-----------------------------------------
-Precision: 0.892
-Recall: 0.856
-F1 Score: 0.874
-Average Precision: 0.901
-
-CLASSIFICATION PERFORMANCE
-----------------------------------------
-Overall Accuracy: 0.934
-Macro F1: 0.925
-Macro Precision: 0.928
-Macro Recall: 0.923
-
-SPEED PERFORMANCE
-----------------------------------------
-Pipeline FPS: 28.5
-Average Processing Time: 35.09 ms
-Real-time Target (30 FPS): ✗ NOT ACHIEVED
-
-MEMORY USAGE
-----------------------------------------
-Peak Memory: 245.3 MB
-Average Memory per Image: 1.23 MB
-Average Memory per Face: 0.45 MB
-Memory Leak Detection: ✓ NO LEAKS DETECTED
-
-OVERALL ASSESSMENT
-----------------------------------------
-System Readiness: 75% (3/4 checks passed)
-Status: ✓ READY FOR DEPLOYMENT
-
-RECOMMENDATIONS
-----------------------------------------
-• Optimize for real-time performance - consider model quantization or hardware acceleration
+**Model not found:**
+```bash
+# Check model file exists
+ls -la model_artifacts/best_pytorch_model_custom.pth
+ls -la yewon_pipeline/face_detection_yunet_2023mar.onnx
 ```
 
-## Advanced Usage
-
-### Custom Dataset Integration
-
-```python
-from evaluation.datasets.dataset_loaders import DatasetLoader
-
-# Create custom dataset loader
-class CustomDatasetLoader:
-    def __init__(self, dataset_path):
-        self.dataset_path = dataset_path
-        # Initialize your dataset
-    
-    def __len__(self):
-        return len(self.samples)
-    
-    def __getitem__(self, idx):
-        # Return (image, target) where target has 'boxes' and 'labels'
-        return image, target
-
-# Register with DatasetLoader
-DatasetLoader.register_loader('custom', CustomDatasetLoader)
+**Import errors:**
+```bash
+# Install missing dependencies
+pip install opencv-python torch torchvision scikit-learn
 ```
 
-### Custom Model Integration
+**Performance issues:**
+- Use `--device cpu` for CPU-only systems
+- Try `--detector haar` for fastest performance
+- Reduce `--width` and `--height` for better FPS
 
-```python
-from evaluation.classifiers.classifier_wrapper import ClassifierWrapper
-
-# Create custom classifier
-class CustomClassifier:
-    def __init__(self, model_path, class_names):
-        # Initialize your model
-        pass
-    
-    def predict_single(self, image):
-        # Return (predicted_class, probabilities)
-        return pred_class, probs
-    
-    def predict(self, images):
-        # Return list of (predicted_class, probabilities)
-        return results
-
-# Register with ClassifierWrapper  
-ClassifierWrapper.register_classifier('custom', CustomClassifier)
-```
-
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -291,25 +276,53 @@ ClassifierWrapper.register_classifier('custom', CustomClassifier)
 5. Push to branch (`git push origin feature/amazing-feature`)
 6. Open a Pull Request
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
-- **YuNet**: OpenCV's face detection model
-- **AndrewMVD**: Face mask detection dataset
+- **OpenCV**: Computer vision library and YuNet model
 - **PyTorch**: Deep learning framework
-- **OpenCV**: Computer vision library
+- **Kaggle Datasets**: Face mask detection datasets
+- **Research Community**: Face detection and classification advances
 
-## Citation
+## 📚 Citation
 
-If you use this evaluation framework in your research, please cite:
+If you use this system in your research, please cite:
 
 ```bibtex
-@misc{facemask_eval_2024,
-  title={Face Mask Detection System - Evaluation Pipeline},
+@misc{realtime_facemask_2024,
+  title={Real-Time Face Mask Detection System},
   author={Your Name},
   year={2024},
   url={https://github.com/clydebaron2000/RealTimeFaceMaskDetection}
 }
+```
+
+---
+
+## 🎯 Quick Reference
+
+### Most Common Commands
+```bash
+# Start with defaults (Haar detector, no classifier)
+python face_mask_detector.py
+
+# Use your custom PyTorch model
+python face_mask_detector.py --classifier custom_pytorch
+
+# Best quality setup (if you have GPU)
+python face_mask_detector.py --detector retinaface --classifier custom_pytorch --device cuda
+
+# Run interactive demo
+python demo_unified_system.py
+```
+
+### Key Files
+- `face_mask_detector.py` - Main unified system
+- `demo_unified_system.py` - Interactive demo
+- `model_artifacts/best_pytorch_model_custom.pth` - Your PyTorch model
+- `yewon_pipeline/face_detection_yunet_2023mar.onnx` - YuNet detector
+
+**Ready to detect masks in real-time! 🎭**
