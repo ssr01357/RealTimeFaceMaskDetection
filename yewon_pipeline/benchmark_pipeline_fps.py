@@ -213,7 +213,7 @@ def main():
     parser = build_argparser()
     args = parser.parse_args()
 
-    # ===== 1) 분류기 체크포인트들 =====
+    # ===== 1) Classifier checkpoints =====
     CHECKPOINTS = [
         # (short_name, checkpoint_path)
         ("resnet18_12k_best",    "/local-ssd/yl3427/test/runs_12k/resnet18_pt_finetune_lr1e-3_ep10/best.pth"),
@@ -225,10 +225,10 @@ def main():
         ("custom_cnn_12k",       "/local-ssd/yl3427/test/runs_12k/custom_cnn_scratch_lr0.001_ep20/best.pth"),
     ]
 
-    # ===== 2) detector 들 =====
+    # ===== 2) Detectors =====
     DETECTORS = ["yunet", "haar", "mtcnn", "retinaface"]
 
-    # ===== 3) 모든 조합에 대해 PIPELINES 생성 =====
+    # ===== 3) Generate PIPELINES for all combinations =====
     # (name, detector_name, checkpoint_path)
     PIPELINES = []
     for det in DETECTORS:
@@ -275,7 +275,7 @@ def main():
             )
         )
 
-    # 요약 출력
+    # Print summary
     print("\n=========== SUMMARY (end-to-end FPS) ===========")
     print("name\t detector\t fps_frames\t fps_faces\t faces_per_frame")
     for (name, det_name, ckpt, fps, fps_faces, fpf) in rows:
